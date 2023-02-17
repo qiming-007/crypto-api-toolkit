@@ -67,6 +67,10 @@
 #include <memory>
 //#include <stddef.h>
 
+typedef CK_RV (*CK_CREATEMUTEX) (volatile unsigned int **mutex);
+typedef CK_RV (*CK_DESTROYMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_LOCKMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_UNLOCKMUTEX) (volatile unsigned int *mutex);
 /*****************************************************************************
  Mutex implementation
  *****************************************************************************/
@@ -195,28 +199,28 @@ void MutexFactory::disable()
 	enabled = false;
 }
 
-CK_RV MutexFactory::CreateMutex(CK_VOID_PTR_PTR newMutex)
+CK_RV MutexFactory::CreateMutex(sgx_spinlock_t** newMutex)
 {
 	if (!enabled) return CKR_OK;
 
 	return (this->createMutex)(newMutex);
 }
 
-CK_RV MutexFactory::DestroyMutex(CK_VOID_PTR mutex)
+CK_RV MutexFactory::DestroyMutex(sgx_spinlock_t* mutex)
 {
 	if (!enabled) return CKR_OK;
 
 	return (this->destroyMutex)(mutex);
 }
 
-CK_RV MutexFactory::LockMutex(CK_VOID_PTR mutex)
+CK_RV MutexFactory::LockMutex(sgx_spinlock_t* mutex)
 {
 	if (!enabled) return CKR_OK;
 
 	return (this->lockMutex)(mutex);
 }
 
-CK_RV MutexFactory::UnlockMutex(CK_VOID_PTR mutex)
+CK_RV MutexFactory::UnlockMutex(sgx_spinlock_t* mutex)
 {
 	if (!enabled) return CKR_OK;
 

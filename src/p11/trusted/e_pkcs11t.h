@@ -1187,10 +1187,10 @@ typedef void*   CK_LOCKMUTEX;
 typedef void*   CK_UNLOCKMUTEX;
 */
 
-typedef CK_RV (*CK_CREATEMUTEX) (void **mutex);
-typedef CK_RV (*CK_DESTROYMUTEX) (void *mutex);
-typedef CK_RV (*CK_LOCKMUTEX) (void *mutex);
-typedef CK_RV (*CK_UNLOCKMUTEX) (void *mutex);
+typedef CK_RV (*CK_CREATEMUTEX) (volatile unsigned int **mutex);
+typedef CK_RV (*CK_DESTROYMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_LOCKMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_UNLOCKMUTEX) (volatile unsigned int *mutex);
 typedef void*   CK_NOTIFY;
 
 /* CK_C_INITIALIZE_ARGS provides the optional arguments to

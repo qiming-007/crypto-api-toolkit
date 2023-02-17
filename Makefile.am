@@ -50,7 +50,6 @@ SGXSSL_TLIB = sgx_tsgxssl
 SGXSSL_TCRYPTO = sgx_tsgxssl_crypto
 SGXSSL_ULIB = sgx_usgxssl
 
-BUILT_SOURCES = PREPARE_SGX_SSL
 PREPARE_SGXSSL = src/dep_check/sgxssl/prepare_sgxssl.sh
 CHECK_OPENSSL_VERSION = src/dep_check/sgxssl/check_openssl_version.sh
 

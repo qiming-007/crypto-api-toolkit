@@ -1186,36 +1186,10 @@ typedef CK_FUNCTION_LIST CK_PTR CK_FUNCTION_LIST_PTR;
 
 typedef CK_FUNCTION_LIST_PTR CK_PTR CK_FUNCTION_LIST_PTR_PTR;
 
-
-/* CK_CREATEMUTEX is an application callback for creating a
- * mutex object
- */
-typedef CK_CALLBACK_FUNCTION(CK_RV, CK_CREATEMUTEX)(
-  CK_VOID_PTR_PTR ppMutex  /* location to receive ptr to mutex */
-);
-
-
-/* CK_DESTROYMUTEX is an application callback for destroying a
- * mutex object
- */
-typedef CK_CALLBACK_FUNCTION(CK_RV, CK_DESTROYMUTEX)(
-  CK_VOID_PTR pMutex  /* pointer to mutex */
-);
-
-
-/* CK_LOCKMUTEX is an application callback for locking a mutex */
-typedef CK_CALLBACK_FUNCTION(CK_RV, CK_LOCKMUTEX)(
-  CK_VOID_PTR pMutex  /* pointer to mutex */
-);
-
-
-/* CK_UNLOCKMUTEX is an application callback for unlocking a
- * mutex
- */
-typedef CK_CALLBACK_FUNCTION(CK_RV, CK_UNLOCKMUTEX)(
-  CK_VOID_PTR pMutex  /* pointer to mutex */
-);
-
+typedef CK_RV (*CK_CREATEMUTEX) (volatile unsigned int **mutex);
+typedef CK_RV (*CK_DESTROYMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_LOCKMUTEX) (volatile unsigned int *mutex);
+typedef CK_RV (*CK_UNLOCKMUTEX) (volatile unsigned int *mutex);
 
 /* CK_C_INITIALIZE_ARGS provides the optional arguments to
  * C_Initialize

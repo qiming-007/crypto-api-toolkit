@@ -86,7 +86,8 @@ public:
 
 private:
 	// The mutex handle
-	CK_VOID_PTR handle;
+	//CK_VOID_PTR handle;
+    sgx_spinlock_t* handle;
 
 	// Is the mutex valid?
 	bool isValid;
@@ -138,10 +139,11 @@ private:
 	// Mutex operations
 	friend class Mutex;
 
-	CK_RV CreateMutex(CK_VOID_PTR_PTR newMutex);
-	CK_RV DestroyMutex(CK_VOID_PTR mutex);
-	CK_RV LockMutex(CK_VOID_PTR mutex);
-	CK_RV UnlockMutex(CK_VOID_PTR mutex);
+	//CK_RV CreateMutex(CK_VOID_PTR_PTR newMutex);
+	CK_RV CreateMutex(sgx_spinlock_t** newMutex);
+	CK_RV DestroyMutex(sgx_spinlock_t* mutex);
+	CK_RV LockMutex(sgx_spinlock_t* mutex);
+	CK_RV UnlockMutex(sgx_spinlock_t* mutex);
 
 	// The one-and-only instance
 	static std::unique_ptr<MutexFactory> instance;

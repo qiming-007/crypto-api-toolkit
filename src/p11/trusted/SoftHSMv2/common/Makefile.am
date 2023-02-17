@@ -4,6 +4,7 @@ AM_CPPFLAGS =   -I$(srcdir)/..                  \
                 -I$(srcdir)/../crypto           \
                 -I$(srcdir)/../data_mgr         \
                 -I$(srcdir)/../..               \
+                -I$(builddir)/../../../trusted/     \
                 -I$(SGXSDKDIR)/include          \
                 -I$(SGXSDKDIR)/include/tlibc    \
                 -I$(SGXSDKDIR)/include/libcxx   \

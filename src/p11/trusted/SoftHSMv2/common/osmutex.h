@@ -37,11 +37,12 @@
 
 #include "config.h"
 #include "cryptoki.h"
+#include "sgx_spinlock.h"
 
-CK_RV OSCreateMutex(CK_VOID_PTR_PTR newMutex);
-CK_RV OSDestroyMutex(CK_VOID_PTR mutex);
-CK_RV OSLockMutex(CK_VOID_PTR mutex);
-CK_RV OSUnlockMutex(CK_VOID_PTR mutex);
+CK_RV OSCreateMutex(unsigned volatile** newMutex);
+CK_RV OSDestroyMutex(unsigned volatile* mutex);
+CK_RV OSLockMutex(unsigned volatile* mutex);
+CK_RV OSUnlockMutex(unsigned volatile* mutex);
 
 #endif /* !_SOFTHSM_V2_OSMUTEX_H */
 

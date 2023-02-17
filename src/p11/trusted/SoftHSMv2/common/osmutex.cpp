@@ -74,6 +74,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+
 CK_RV OSCreateMutex(CK_VOID_PTR_PTR newMutex)
 {
 	int rv;
@@ -273,12 +274,16 @@ CK_RV OSUnlockMutex(CK_VOID_PTR mutex)
 #error "There are no mutex implementations for your operating system yet"
 #endif
 #else
-#include <mutex>
+#include "p11Enclave_t.h"
+//#include <mutex>
+#include "sgx_spinlock.h"
 
-CK_RV OSCreateMutex(CK_VOID_PTR_PTR newMutex)
+CK_RV OSCreateMutex(unsigned volatile** newMutex)
 {
 	/* Allocate memory */
-    std::mutex *mtx = new std::mutex;
+    //std::mutex *mtx = new std::mutex;
+    sgx_spinlock_t *mtx = new sgx_spinlock_t;
+    *mtx = SGX_SPINLOCK_INITIALIZER;
 
 	if (!mtx)
 	{
@@ -290,32 +295,37 @@ CK_RV OSCreateMutex(CK_VOID_PTR_PTR newMutex)
 	return CKR_OK;
 }
 
-CK_RV OSDestroyMutex(CK_VOID_PTR inMutex)
+CK_RV OSDestroyMutex(unsigned volatile* inMutex)
 {
-    delete reinterpret_cast<std::mutex*>(inMutex);
+    delete reinterpret_cast<sgx_spinlock_t*>(inMutex);
 	return CKR_OK;
 }
 
-CK_RV OSLockMutex(CK_VOID_PTR inMutex)
+CK_RV OSLockMutex(unsigned volatile* inMutex)
 {
 	if (!inMutex)
 	{
 		return CKR_ARGUMENTS_BAD;
 	}
 
-    reinterpret_cast<std::mutex*>(inMutex)->lock();
+    //ocall_print_string("lock\n");
+
+    sgx_spin_lock(reinterpret_cast<sgx_spinlock_t*>(inMutex));
 
 	return CKR_OK;
 }
 
-CK_RV OSUnlockMutex(CK_VOID_PTR inMutex)
+CK_RV OSUnlockMutex(unsigned volatile* inMutex)
 {
 	if (!inMutex)
 	{
 		return CKR_ARGUMENTS_BAD;
 	}
 
-    reinterpret_cast<std::mutex*>(inMutex)->unlock();
+    //ocall_print_string("unlock\n");
+
+    //reinterpret_cast<std::mutex*>(inMutex)->unlock();
+    sgx_spin_unlock(reinterpret_cast<sgx_spinlock_t*>(inMutex));
 
 	return CKR_OK;
 }
